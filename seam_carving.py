@@ -1,4 +1,6 @@
 import cv2
+import sys
+import os
 import numpy as np
 from scipy import ndimage
 
@@ -10,10 +12,19 @@ class Seam_Carving:
     prewitt_y = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
 
 
-    def __init__(self,img_path):
+    def __init__(self,img_path,change_width):
         # Read image from path and store in object property
         self.img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE).astype(np.uint16)
+
+        # Check if the image is empty
+        if self.img is None:
+            print("Error: Could not read image")
+
         self.rows, self.cols = self.img.shape
+
+        # Check if width is a valid integer
+        if ((change_width > self.cols) or (change_width < 0)):
+            print("Error: change_width should be less than the width of the image and greater than 0")
 
     def display(self, image=np.array([])):
         if (image.shape == (0,0)): image = self.img
@@ -123,7 +134,20 @@ class Seam_Carving:
 
 
 def main():
-    carver = Seam_Carving("/Users/oluwatofunmisodimu/Documents/Perception_py/Kinkaku-ji.jpg")
+    # Check that correct number of command-line arguments are passed
+    if (len(sys.argv) != 3):
+        print("Error: usage should be: python3 seam_carving.py <Image_Path> <change_width>")
+        return -1
+    
+    # Check if the Image exists
+    if not os.path.exists(sys.argv[1]):
+        print(f"Error: Image file not found at {sys.argv[1]}")
+    
+    # Check if width is an integer
+    if (not isinstance(sys.argv[2].isdigit(), int)):
+        print("Error: change_width should be an integer")
+
+    carver = Seam_Carving(sys.argv[1], int(sys.argv[2]))
     
     # Step 1 : Get energy/magnitude of image
     img_energy = carver.energy()
@@ -135,12 +159,16 @@ def main():
 
     # Step 3: Backtrack in dp_array to get min_path and delete from og_img
     final_img = np.copy(carver.img)
-    for _ in range(100):
+    for _ in range(int(sys.argv[2])): # Decrease width by 100 pixels
         final_img, img_energy, dp_img = carver.remove_path(final_img, img_energy, dp_img)
     final_img_formatted = (final_img/final_img.max() * 255).astype(np.uint8)
 
     # Display images
     carver.display_all(img_energy_formatted,final_img_formatted)
+
+    # Save images
+    cv2.imwrite("Energy.jpg", img_energy_formatted)
+    cv2.imwrite("Resized_img.jpg", final_img_formatted)
 
 
 if __name__ == "__main__":
