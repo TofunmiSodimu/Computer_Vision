@@ -16,6 +16,11 @@ class Canny_Edge_Detector:
         # Read image from path and store in object property
         if type(img) == str: self.img = cv2.imread(img, cv2.IMREAD_GRAYSCALE).astype(np.uint8)
         else: self.img = img
+
+        # Check if the image is empty
+        if self.img is None:
+            print("Error: Could not read image")
+
         self.rows, self.cols = self.img.shape
         self.gaussian_size = gaussian_size
         self.stdev = stdev
@@ -32,6 +37,10 @@ class Canny_Edge_Detector:
 
         # Display images for each step
         # self.display_all(img_mag, nms_img, final_img)
+
+        # Save images
+        cv2.imwrite("Img_magnitude.png", (img_mag * 255).astype(np.uint8))
+        cv2.imwrite("Final_img.png", (final_img * 255).astype(np.uint8))
 
         return final_img
 
