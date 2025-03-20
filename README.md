@@ -52,3 +52,27 @@
    <p align="center"> 
      <img src="https://github.com/TofunmiSodimu/Computer_Vision/blob/main/Final_img.png"/>
    </p>
+5. 'corner_detector.py' - This is an implementation of the Harris corner detection algorithm to extract corners
+    from an image.
+   - To use: python3 corner_detector.py <Input_Image_Path> <Optional-Window_Size> <Optional-Threshold(0-1)>
+
+   <p align="center"> 
+   <h4 align="center">Original Image</h4>
+   </p>
+   <p align="center"> 
+     <img src="https://github.com/TofunmiSodimu/Computer_Vision/blob/main/toy.png"/>
+   </p>
+
+   <p align="center"> 
+   <h4 align="center">Corner Reesponse</h4>
+   </p>
+   <p align="center"> 
+     <img src="https://github.com/TofunmiSodimu/Computer_Vision/blob/main/corner_response.png"/>
+   </p>
+
+   <p align="center"> 
+   <h4 align="center">Final Image</h4>
+   </p>
+   <p align="center"> 
+     <img src="https://github.com/TofunmiSodimu/Computer_Vision/blob/main/Final_img_corner.png"/>
+   </p>
